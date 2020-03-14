@@ -32,6 +32,11 @@ export default {
       'https://coronavirus-tracker-api.herokuapp.com/all'
     )
     return { overview: cData.latest }
+  },
+  mounted() {
+    this.$axios
+      .get('https://coronavirus-tracker-api.herokuapp.com/all')
+      .then((res) => (this.overview = res.data.latest))
   }
 }
 </script>

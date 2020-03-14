@@ -30,9 +30,10 @@ export default {
         .map((l) => ({
           country: l.country,
           country_code: l.country_code,
+          province: l.province,
           latest: l.latest
         }))
-        .sort((a, b) => a.country.localeCompare(b.country))
+        .sort((a, b) => b.latest - a.latest)
     }
   },
   data() {
@@ -40,6 +41,7 @@ export default {
       headers: [
         { text: 'country', value: 'country' },
         { text: 'code', value: 'country_code' },
+        { text: 'province', value: 'province' },
         { text: 'cases', value: 'latest' }
       ]
     }
