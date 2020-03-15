@@ -1,6 +1,12 @@
 <template>
   <v-app dark>
-    <v-navigation-drawer v-model="drawer" :clipped="clipped" fixed app>
+    <v-navigation-drawer
+      v-model="drawer"
+      style="z-index: 999999"
+      :clipped="clipped"
+      fixed
+      app
+    >
       <v-list>
         <v-list-item
           v-for="(item, i) in items"
@@ -24,12 +30,15 @@
       <v-spacer />
     </v-app-bar>
     <v-content>
-      <v-container>
-        <nuxt />
-      </v-container>
+      <nuxt />
     </v-content>
     <v-footer :fixed="fixed" app>
-      <span>&copy; {{ new Date().getFullYear() }}</span>
+      <span>&copy; {{ new Date().getFullYear() }} &nbsp;-&nbsp; </span>
+      <a
+        href="https://github.com/ExpDev07/coronavirus-tracker-api"
+        target="_blank"
+        >data source</a
+      >
     </v-footer>
   </v-app>
 </template>

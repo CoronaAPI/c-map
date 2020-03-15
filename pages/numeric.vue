@@ -1,19 +1,16 @@
 <template>
-  <v-layout>
-    <div class="d-flex flex-column">
-      <v-chip class="ma-2" color="green" text-color="black">
-        {{ `last update at: ${formatedDate}` }}
-      </v-chip>
-      <v-chip class="ma-2" color="yellow" text-color="black">
-        {{ `Total confirmed infections: ${cases}` }}
-      </v-chip>
-      <v-data-table
-        :headers="headers"
-        :items="locations"
-        :items-per-page="100"
-        class="elevation-1"
-      ></v-data-table>
-    </div>
+  <v-layout column justify-center>
+    <v-chip class="ma-2" color="green" text-color="black">
+      {{ `last update at: ${formatedDate}` }}
+    </v-chip>
+    <v-chip class="ma-2" color="yellow" text-color="black">
+      {{ `Total confirmed infections: ${cases}` }}
+    </v-chip>
+    <v-data-table
+      :headers="headers"
+      :items="locations"
+      class="elevation-1"
+    ></v-data-table>
   </v-layout>
 </template>
 
