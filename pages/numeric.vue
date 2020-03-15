@@ -40,7 +40,6 @@ export default {
     return {
       headers: [
         { text: 'country', value: 'country' },
-        { text: 'code', value: 'country_code' },
         { text: 'province', value: 'province' },
         { text: 'cases', value: 'latest' }
       ]

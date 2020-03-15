@@ -1,25 +1,29 @@
 <template>
   <v-layout column justify-center align-center>
     <v-flex xs12 sm8 md6>
-      <v-card>
-        <v-card-title class="headline">
-          Corona live data
-        </v-card-title>
-        <v-chip class="ma-2" color="yellow" text-color="black">
-          {{ `Confirmed infections: ${overview.confirmed}` }}
-        </v-chip>
-        <v-chip class="ma-2" color="green" text-color="black">
-          {{ `Recovered: ${overview.recovered}` }}
-        </v-chip>
-        <v-chip class="ma-2" color="red" text-color="white">
-          {{ `Deaths: ${overview.deaths}` }}
-        </v-chip>
-        <v-card-actions>
-          <v-spacer />
-          <v-btn color="primary" nuxt to="/numeric">
-            Continue
-          </v-btn>
-        </v-card-actions>
+      <v-card class="mb-4" color="#999660" dark>
+        <v-card-title class="headline">Confirmed cases</v-card-title>
+        <v-card-text>
+          <p class="display-1 text--primary text-center">
+            {{ overview.confirmed }}
+          </p>
+        </v-card-text>
+      </v-card>
+      <v-card class="mb-4" color="#60996b" dark>
+        <v-card-title class="headline">Recovered</v-card-title>
+        <v-card-text>
+          <p class="display-1 text--primary text-center">
+            {{ overview.recovered }}
+          </p>
+        </v-card-text>
+      </v-card>
+      <v-card class="mb-4" color="#854d56" dark>
+        <v-card-title class="headline">Deaths</v-card-title>
+        <v-card-text>
+          <p class="display-1 text--primary text-center">
+            {{ overview.deaths }}
+          </p>
+        </v-card-text>
       </v-card>
     </v-flex>
   </v-layout>
