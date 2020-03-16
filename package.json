@@ -1,7 +1,7 @@
 {
-  "name": "c-map",
+  "name": "corona-tracker",
   "version": "1.0.0",
-  "description": "My great Nuxt.js project",
+  "description": "Visualisation of the distribution of the coronavirus COVID-19 based on data of the Johns Hopkins CSSE",
   "author": "Martin Lux",
   "private": true,
   "scripts": {

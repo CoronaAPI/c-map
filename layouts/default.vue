@@ -28,6 +28,9 @@
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
       <v-toolbar-title v-text="title" />
       <v-spacer />
+      <v-btn icon href="https://github.com/martiL/c-map">
+        <v-icon>mdi-github</v-icon>
+      </v-btn>
     </v-app-bar>
     <v-content>
       <nuxt />
@@ -48,7 +51,7 @@ export default {
   data() {
     return {
       clipped: true,
-      drawer: false,
+      drawer: null,
       fixed: false,
       items: [
         {

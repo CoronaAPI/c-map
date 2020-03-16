@@ -1,6 +1,6 @@
 # c-map
 
-> My great Nuxt.js project
+> Visualisation of the distribution of the coronavirus COVID-19 based on data of the [Johns Hopkins CSSE](https://github.com/CSSEGISandData/COVID-19)
 
 ## Build Setup
 
