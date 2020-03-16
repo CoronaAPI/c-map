@@ -34,10 +34,10 @@
         </v-col>
       </v-row>
       <div id="map-wrap" style="height: 65vh; width: 100%;">
-        <no-ssr>
+        <client-only>
           <l-map :zoom="2" :min-zoom="2" :max-zoom="13" :center="[50.0, 8.4]">
             <l-tile-layer
-              url="https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png"
+              url="https://{s}.basemaps.cartocdn.com/rastertiles/dark_all/{z}/{x}/{y}.png"
             ></l-tile-layer>
             <l-circle
               v-for="marker in markers"
@@ -47,7 +47,7 @@
               color="red"
             />
           </l-map>
-        </no-ssr>
+        </client-only>
       </div>
     </v-flex>
   </v-layout>
