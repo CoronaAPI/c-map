@@ -37,12 +37,7 @@ export const getters = {
   },
   confirmedLocations(state) {
     return state.cData.confirmed.locations
-      .map((l) => ({
-        country: l.country,
-        country_code: l.country_code,
-        province: l.province,
-        latest: l.latest
-      }))
+      .map((l) => l)
       .sort((a, b) => b.latest - a.latest)
   }
 }
