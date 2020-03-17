@@ -1,16 +1,35 @@
 <template>
   <v-layout column justify-center>
-    <v-chip class="ma-2" color="green" text-color="black">
-      {{ `last update at: ${formatedDate}` }}
-    </v-chip>
-    <v-chip class="ma-2" color="yellow" text-color="black">
-      {{ `Total confirmed infections: ${cases}` }}
-    </v-chip>
+    <v-card class="mb-4">
+      <v-chip class="ma-2" color="green" text-color="black">
+        <v-avatar left>
+          <v-icon>mdi-clock</v-icon>
+        </v-avatar>
+        <strong>Last update:</strong>&nbsp;
+        {{ formatedDate }}
+      </v-chip>
+      <v-chip class="ma-2" color="yellow" text-color="black">
+        <strong>Cases:</strong>&nbsp;
+        {{ cases }}
+      </v-chip>
+    </v-card>
+    <v-text-field
+      v-model="search"
+      append-icon="mdi-magnify"
+      label="Search"
+      single-line
+      hide-details
+    ></v-text-field>
     <v-data-table
       :headers="headers"
       :items="locations"
+      :search="search"
       class="elevation-1"
-    ></v-data-table>
+    >
+      <template v-slot:item.ratioPopCases="{ item }">
+        {{ item.ratioPopCases.toFixed(4) }}
+      </template>
+    </v-data-table>
   </v-layout>
 </template>
 
@@ -20,19 +39,23 @@ import { mapGetters } from 'vuex'
 export default {
   data() {
     return {
+      search: '',
       headers: [
         { text: 'country', value: 'country' },
-        { text: 'province', value: 'province' },
-        { text: 'cases', value: 'latest' }
+        { text: 'cases', value: 'latest' },
+        { text: 'population', value: 'population' },
+        {
+          text: '(cases * 100)/population',
+          value: 'ratioPopCases'
+        }
       ]
     }
   },
   computed: {
     ...mapGetters({
-      overview: 'getCoronaData',
       formatedDate: 'confirmedUpdatedAt',
       cases: 'confirmedCases',
-      locations: 'confirmedLocations'
+      locations: 'confirmedCountries'
     })
   }
 }

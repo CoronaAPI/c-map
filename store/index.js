@@ -1,3 +1,5 @@
+import { reduceProvincesToCountries } from '~/services/coronaDataParser.service'
+
 export const state = () => ({
   cData: undefined,
   isFetchingData: false
@@ -35,10 +37,14 @@ export const getters = {
   confirmedCases(state) {
     return state.cData.confirmed.latest
   },
-  confirmedLocations(state) {
-    return state.cData.confirmed.locations
-      .map((l) => l)
-      .sort((a, b) => b.latest - a.latest)
+  confirmedCountries(state) {
+    return reduceProvincesToCountries(state.cData.confirmed.locations)
+  },
+  recoveredCountries(state) {
+    return reduceProvincesToCountries(state.cData.recovered.locations)
+  },
+  deathsCountries(state) {
+    return reduceProvincesToCountries(state.cData.deaths.locations)
   }
 }
 

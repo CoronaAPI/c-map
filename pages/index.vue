@@ -18,6 +18,11 @@
         </v-col>
       </v-row>
       <client-only>
+        <v-switch
+          v-model="showRelativeRatio"
+          class="ma-2"
+          label="Show number of cases in relation to population (cases / population)"
+        ></v-switch>
         <div id="map-wrap" style="height: 65vh; width: 100%;">
           <l-map :zoom="2" :min-zoom="2" :max-zoom="13" :center="[50.0, 8.4]">
             <l-tile-layer
@@ -27,10 +32,12 @@
               v-for="marker in markers"
               :key="marker.key"
               :lat-lng="[marker.lat, marker.long]"
-              :radius="marker.cases * 15"
+              :radius="getRadius(marker)"
               :color="activeIndice.color"
             >
-              <l-popup>{{ `cases: ${marker.cases}` }}</l-popup>
+              <l-popup>{{
+                `country: ${marker.country}, cases: ${marker.cases}`
+              }}</l-popup>
             </l-circle>
           </l-map>
         </div>
@@ -62,17 +69,50 @@ export default {
           tag: 'deaths',
           color: '#854d56'
         }
-      }
+      },
+      showRelativeRatio: false
     }
   },
   computed: {
     ...mapGetters({
-      overview: 'getCoronaData'
+      overview: 'getCoronaData',
+      confirmedCountries: 'confirmedCountries',
+      recoveredCountries: 'recoveredCountries',
+      deathsCountries: 'deathsCountries'
     }),
     markers() {
+      if (this.showRelativeRatio) {
+        let locations = this.confirmedCountries
+        switch (this.activeIndice.tag) {
+          case this.indiceConfig.recovered.tag:
+            locations = this.recoveredCountries
+            break
+          case this.indiceConfig.deaths.tag:
+            locations = this.deathsCountries
+            break
+          default:
+            break
+        }
+        return locations
+          .map((l, index) => {
+            return {
+              ...l.coordinates,
+              country: l.country,
+              cases: l.latest,
+              ratioPopCases: l.ratioPopCases,
+              index
+            }
+          })
+          .filter((l) => l.cases > 0)
+      }
       return this.overview[this.activeIndice.tag].locations
         .map((l, index) => {
-          return { ...l.coordinates, cases: l.latest, index }
+          return {
+            ...l.coordinates,
+            country: l.country,
+            cases: l.latest,
+            index
+          }
         })
         .filter((l) => l.cases > 0)
     },
@@ -99,6 +139,12 @@ export default {
   methods: {
     setActiveIndice(indice) {
       this.activeIndice = indice
+    },
+    getRadius(marker) {
+      if (this.showRelativeRatio) {
+        return marker.ratioPopCases * 1000000
+      }
+      return marker.cases * 15
     }
   }
 }
