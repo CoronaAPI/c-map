@@ -9,41 +9,23 @@ export function reduceProvincesToCountries(locations) {
         (p) => p.country_code === province.country_code
       )
       const country = allProvinces.reduce(
-        (result, current) => ({
-          ...result,
-          ...current,
-          coordinates: {
-            lat: String(
-              parseFloat(result.coordinates.lat) +
-                parseFloat(current.coordinates.lat)
-            ),
-            long: String(
-              parseFloat(result.coordinates.long) +
-                parseFloat(current.coordinates.long)
-            )
-          },
-          latest: result.latest + current.latest
-        }),
+        (result, current) => {
+          return {
+            ...current,
+            ...result,
+            latest: result.latest + current.latest
+          }
+        },
         {
-          coordinates: {
-            lat: '0',
-            long: '0'
-          },
           latest: 0
         }
       )
+      const provinceMostCases = allProvinces.reduce((prev, current) =>
+        prev.latest > current.latest ? prev : current
+      )
       countries.push({
         ...country,
-        coordinates: {
-          lat: String(
-            parseFloat(country.coordinates.lat) /
-              parseFloat(allProvinces.length)
-          ),
-          long: String(
-            parseFloat(country.coordinates.long) /
-              parseFloat(allProvinces.length)
-          )
-        }
+        coordinates: provinceMostCases.coordinates
       })
       alreadyMapped.push(country.country_code)
     }
