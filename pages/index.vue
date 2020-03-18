@@ -21,7 +21,7 @@
         <v-switch
           v-model="showRelativeRatio"
           class="ma-2"
-          label="Show number of cases in relation to population (cases / population)"
+          label="Show the number of cases in relation to the population of a country (cases / population)"
         ></v-switch>
         <div id="map-wrap" style="height: 65vh; width: 100%;">
           <l-map :zoom="2" :min-zoom="2" :max-zoom="13" :center="[50.0, 8.4]">

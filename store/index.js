@@ -1,4 +1,7 @@
-import { reduceProvincesToCountries } from '~/services/coronaDataParser.service'
+import {
+  reduceProvincesToCountries,
+  addDailyIncrease
+} from '~/services/coronaDataParser.service'
 
 export const state = () => ({
   cData: undefined,
@@ -37,14 +40,23 @@ export const getters = {
   confirmedCases(state) {
     return state.cData.confirmed.latest
   },
-  confirmedCountries(state) {
-    return reduceProvincesToCountries(state.cData.confirmed.locations)
+  confirmedProvinces(state) {
+    return addDailyIncrease(state.cData.confirmed.locations)
   },
-  recoveredCountries(state) {
-    return reduceProvincesToCountries(state.cData.recovered.locations)
+  recoveredProvinces(state) {
+    return addDailyIncrease(state.cData.recovered.locations)
   },
-  deathsCountries(state) {
-    return reduceProvincesToCountries(state.cData.deaths.locations)
+  deathsProvinces(state) {
+    return addDailyIncrease(state.cData.deaths.locations)
+  },
+  confirmedCountries(state, getters) {
+    return reduceProvincesToCountries(getters.confirmedProvinces)
+  },
+  recoveredCountries(state, getters) {
+    return reduceProvincesToCountries(getters.recoveredProvinces)
+  },
+  deathsCountries(state, getters) {
+    return reduceProvincesToCountries(getters.deathsProvinces)
   }
 }
 

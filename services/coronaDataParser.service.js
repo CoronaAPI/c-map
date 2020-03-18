@@ -42,5 +42,23 @@ export function reduceProvincesToCountries(locations) {
         ratioPopCases: (l.latest * 100) / (pop.z * 1000)
       }
     })
+}
+
+export function addDailyIncrease(locations) {
+  const date = new Date(Date.now() - 48 * 3600 * 1000)
+  return locations
+    .map((l) => {
+      const lastIncrease =
+        l.history[
+          `${date.getMonth() + 1}/${date.getDate()}/${date
+            .getFullYear()
+            .toString()
+            .slice(-2)}`
+        ]
+      return {
+        ...l,
+        increaseToday: l.latest - lastIncrease
+      }
+    })
     .sort((a, b) => b.latest - a.latest)
 }

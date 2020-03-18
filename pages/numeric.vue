@@ -1,17 +1,15 @@
 <template>
-  <v-layout column justify-center>
-    <v-card class="mb-4">
-      <v-chip class="ma-2" color="green" text-color="black">
-        <v-avatar left>
-          <v-icon>mdi-clock</v-icon>
-        </v-avatar>
-        <strong>Last update:</strong>&nbsp;
-        {{ formatedDate }}
-      </v-chip>
-      <v-chip class="ma-2" color="yellow" text-color="black">
-        <strong>Cases:</strong>&nbsp;
-        {{ cases }}
-      </v-chip>
+  <v-layout class="ma-5" column justify-center>
+    <v-alert dense type="info">
+      <strong>Last update:</strong>&nbsp;
+      {{ formatedDate }}
+    </v-alert>
+    <v-card>
+      <v-switch
+        v-model="showProvinces"
+        class="ma-2"
+        label="Show numbers for provinces"
+      ></v-switch>
     </v-card>
     <v-text-field
       v-model="search"
@@ -21,8 +19,8 @@
       hide-details
     ></v-text-field>
     <v-data-table
-      :headers="headers"
-      :items="locations"
+      :headers="getTableHeader"
+      :items="getTableData"
       :search="search"
       class="elevation-1"
     >
@@ -40,14 +38,22 @@ export default {
   data() {
     return {
       search: '',
+      showProvinces: false,
       headers: [
         { text: 'country', value: 'country' },
         { text: 'cases', value: 'latest' },
+        { text: 'increase', value: 'increaseToday' },
         { text: 'population', value: 'population' },
         {
           text: '(cases * 100)/population',
           value: 'ratioPopCases'
         }
+      ],
+      headersProvinces: [
+        { text: 'country', value: 'country' },
+        { text: 'province', value: 'province' },
+        { text: 'cases', value: 'latest' },
+        { text: 'increase', value: 'increaseToday' }
       ]
     }
   },
@@ -55,8 +61,21 @@ export default {
     ...mapGetters({
       formatedDate: 'confirmedUpdatedAt',
       cases: 'confirmedCases',
-      locations: 'confirmedCountries'
-    })
+      countries: 'confirmedCountries',
+      provinces: 'confirmedProvinces'
+    }),
+    getTableData() {
+      if (this.showProvinces) {
+        return this.provinces
+      }
+      return this.countries
+    },
+    getTableHeader() {
+      if (this.showProvinces) {
+        return this.headersProvinces
+      }
+      return this.headers
+    }
   }
 }
 </script>
