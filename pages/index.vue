@@ -1,23 +1,23 @@
 <template>
   <v-layout>
     <v-flex>
-      <v-row justify="center">
-        <v-col v-for="(i, index) in indices" :key="index" cols="12" sm="4">
-          <v-card
-            :color="i.indice.color"
-            dark
-            @click="setActiveIndice(i.indice)"
-          >
-            <v-card-title class="headline">{{ i.headline }}</v-card-title>
-            <v-card-text>
-              <p class="display-1 text--primary text-center">
-                {{ i.value }}
-              </p>
-            </v-card-text>
-          </v-card>
-        </v-col>
-      </v-row>
       <client-only>
+        <v-row justify="center">
+          <v-col v-for="(i, index) in indices" :key="index" cols="12" sm="4">
+            <v-card
+              :color="i.indice.color"
+              dark
+              @click="setActiveIndice(i.indice)"
+            >
+              <v-card-title class="headline">{{ i.headline }}</v-card-title>
+              <v-card-text>
+                <p class="display-1 text--primary text-center">
+                  {{ i.value }}
+                </p>
+              </v-card-text>
+            </v-card>
+          </v-col>
+        </v-row>
         <v-switch
           v-model="showRelativeRatio"
           class="ma-2"
