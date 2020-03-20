@@ -1,34 +1,36 @@
 <template>
-  <v-layout class="ma-5" column justify-center>
-    <v-alert dense type="info">
-      <strong>Last update:</strong>&nbsp;
-      {{ formatedDate }}
-    </v-alert>
-    <v-card>
-      <v-switch
-        v-model="showProvinces"
-        class="ma-2"
-        label="Show numbers for provinces"
-      ></v-switch>
-    </v-card>
-    <v-text-field
-      v-model="search"
-      append-icon="mdi-magnify"
-      label="Search"
-      single-line
-      hide-details
-    ></v-text-field>
-    <v-data-table
-      :headers="getTableHeader"
-      :items="getTableData"
-      :search="search"
-      class="elevation-1"
-    >
-      <template v-slot:item.ratioPopCases="{ item }">
-        {{ item.ratioPopCases.toFixed(4) }}
-      </template>
-    </v-data-table>
-  </v-layout>
+  <v-container>
+    <v-layout column justify-center>
+      <v-alert dense type="info">
+        <strong>Last update:</strong>&nbsp;
+        {{ formatedDate }}
+      </v-alert>
+      <v-card>
+        <v-switch
+          v-model="showProvinces"
+          class="ma-2"
+          label="Show numbers for provinces"
+        ></v-switch>
+      </v-card>
+      <v-text-field
+        v-model="search"
+        append-icon="mdi-magnify"
+        label="Search"
+        single-line
+        hide-details
+      ></v-text-field>
+      <v-data-table
+        :headers="getTableHeader"
+        :items="getTableData"
+        :search="search"
+        class="elevation-1"
+      >
+        <template v-slot:item.ratioPopCases="{ item }">
+          {{ item.ratioPopCases.toFixed(4) }}
+        </template>
+      </v-data-table>
+    </v-layout>
+  </v-container>
 </template>
 
 <script>
