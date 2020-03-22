@@ -28,7 +28,7 @@
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
       <v-toolbar-title v-text="title" />
       <v-spacer />
-      <v-btn icon href="https://github.com/martiL/c-map">
+      <v-btn icon href="https://github.com/CoronaAPI">
         <v-icon>mdi-github</v-icon>
       </v-btn>
     </v-app-bar>
@@ -37,9 +37,7 @@
     </v-content>
     <v-footer :fixed="fixed" app>
       <span>&copy; {{ new Date().getFullYear() }} &nbsp;-&nbsp; </span>
-      <a
-        href="https://github.com/ExpDev07/coronavirus-tracker-api"
-        target="_blank"
+      <a href="https://corona-api-landingpage.netlify.com/" target="_blank"
         >data source</a
       >
     </v-footer>

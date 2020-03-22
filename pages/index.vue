@@ -2,28 +2,7 @@
   <v-container>
     <v-layout>
       <v-flex>
-        <v-row justify="center">
-          <v-col v-for="(i, index) in indices" :key="index" cols="12" sm="4">
-            <v-card
-              :color="i.indice.color"
-              dark
-              @click="setActiveIndice(i.indice)"
-            >
-              <v-card-title class="headline">{{ i.headline }}</v-card-title>
-              <v-card-text>
-                <p class="display-1 text--primary text-center">
-                  {{ i.value }}
-                </p>
-              </v-card-text>
-            </v-card>
-          </v-col>
-        </v-row>
         <client-only>
-          <v-switch
-            v-model="showRelativeRatio"
-            class="ma-2"
-            label="Show the number of cases in relation to the population of a country (cases / population)"
-          ></v-switch>
           <div id="map-wrap" style="height: 60vh; width: 100%;">
             <l-map :zoom="2" :min-zoom="2" :max-zoom="13" :center="[50.0, 8.4]">
               <l-tile-layer
@@ -34,7 +13,7 @@
                 :key="marker.key"
                 :lat-lng="[marker.lat, marker.long]"
                 :radius="getRadius(marker)"
-                :color="activeIndice.color"
+                :color="red"
               >
                 <l-popup>{{
                   `country: ${marker.country}, cases: ${marker.cases}`
@@ -52,100 +31,30 @@
 import { mapGetters } from 'vuex'
 
 export default {
-  data() {
-    return {
-      activeIndice: {
-        tag: 'confirmed',
-        color: '#999660'
-      },
-      indiceConfig: {
-        confirmed: {
-          tag: 'confirmed',
-          color: '#999660'
-        },
-        recovered: {
-          tag: 'recovered',
-          color: '#60996b'
-        },
-        deaths: {
-          tag: 'deaths',
-          color: '#854d56'
-        }
-      },
-      showRelativeRatio: false
-    }
-  },
   computed: {
     ...mapGetters({
-      overview: 'getCoronaData',
-      confirmedCountries: 'confirmedCountries',
-      recoveredCountries: 'recoveredCountries',
-      deathsCountries: 'deathsCountries'
+      overview: 'getCoronaData'
     }),
     markers() {
-      if (this.showRelativeRatio) {
-        let locations = this.confirmedCountries
-        switch (this.activeIndice.tag) {
-          case this.indiceConfig.recovered.tag:
-            locations = this.recoveredCountries
-            break
-          case this.indiceConfig.deaths.tag:
-            locations = this.deathsCountries
-            break
-          default:
-            break
-        }
-        return locations
-          .map((l, index) => {
-            return {
-              ...l.coordinates,
-              country: l.country,
-              cases: l.latest,
-              ratioPopCases: l.ratioPopCases,
-              index
-            }
-          })
-          .filter((l) => l.cases > 0)
-      }
-      return this.overview[this.activeIndice.tag].locations
+      return this.overview
+        .filter((l) => l.coordinates !== undefined)
         .map((l, index) => {
           return {
             ...l.coordinates,
+            coordinates: {
+              lat: l.coordinates[1],
+              long: l.coordinates[0]
+            },
             country: l.country,
-            cases: l.latest,
+            cases: l.active,
             index
           }
         })
         .filter((l) => l.cases > 0)
-    },
-    indices() {
-      return [
-        {
-          headline: 'Confirmed cases',
-          indice: this.indiceConfig.confirmed,
-          value: this.overview.latest.confirmed
-        },
-        {
-          headline: 'Recovered',
-          indice: this.indiceConfig.recovered,
-          value: this.overview.latest.recovered
-        },
-        {
-          headline: 'Deaths',
-          indice: this.indiceConfig.deaths,
-          value: this.overview.latest.deaths
-        }
-      ]
     }
   },
   methods: {
-    setActiveIndice(indice) {
-      this.activeIndice = indice
-    },
     getRadius(marker) {
-      if (this.showRelativeRatio) {
-        return marker.ratioPopCases * 1000000
-      }
       return marker.cases * 15
     }
   }
