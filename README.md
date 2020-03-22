@@ -1,6 +1,6 @@
 # c-map
 
-> Visualisation of the distribution of the coronavirus COVID-19 based on data of the [Johns Hopkins CSSE](https://github.com/CSSEGISandData/COVID-19)
+> Visualisation of the distribution of the coronavirus COVID-19 based on data of the [CoronaAPI](https://corona-api-landingpage.netlify.com/)
 
 ## Build Setup
 
