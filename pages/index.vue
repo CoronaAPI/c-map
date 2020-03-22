@@ -3,6 +3,10 @@
     <v-layout>
       <v-flex>
         <client-only>
+          <v-alert dense type="info">
+            <strong>Last update:</strong>&nbsp;
+            {{ formatedDate }}
+          </v-alert>
           <p>Click on the points on the map to get more information</p>
           <div id="map-wrap" style="height: 60vh; width: 100%;">
             <l-map :zoom="2" :min-zoom="2" :max-zoom="13" :center="[50.0, 8.4]">
@@ -46,7 +50,8 @@ import { mapGetters } from 'vuex'
 export default {
   computed: {
     ...mapGetters({
-      overview: 'getCoronaData'
+      overview: 'getCoronaData',
+      formatedDate: 'confirmedUpdatedAt'
     }),
     markers() {
       return this.overview
