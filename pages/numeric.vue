@@ -14,7 +14,7 @@
       ></v-text-field>
       <v-data-table
         :headers="headers"
-        :items="overview"
+        :items="sortedList"
         :search="search"
         class="elevation-1"
       />
@@ -29,12 +29,17 @@ export default {
   data() {
     return {
       search: '',
-      showProvinces: false,
       headers: [
         { text: 'country', value: 'country' },
+        { text: 'cases', value: 'cases' },
         { text: 'active', value: 'active' },
         { text: 'recovered', value: 'recovered' },
         { text: 'deaths', value: 'deaths' },
+        { text: 'tested', value: 'tested' },
+        { text: 'county', value: 'county' },
+        { text: 'state', value: 'state' },
+        { text: 'population', value: 'population' },
+        { text: 'rating', value: 'rating' },
         { text: 'url', value: 'url' }
       ]
     }
@@ -43,7 +48,10 @@ export default {
     ...mapGetters({
       formatedDate: 'confirmedUpdatedAt',
       overview: 'getCoronaData'
-    })
+    }),
+    sortedList() {
+      return [...this.overview].sort((a, b) => b.cases - a.cases)
+    }
   }
 }
 </script>
