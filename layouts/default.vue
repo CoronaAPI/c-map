@@ -40,6 +40,12 @@
       <a href="https://corona-api-landingpage.netlify.com/" target="_blank"
         >data source</a
       >
+      <v-spacer />
+      <a
+        href="https://corona-api-landingpage.netlify.com/impressum/"
+        target="_blank"
+        >Impressum</a
+      >
     </v-footer>
   </v-app>
 </template>
