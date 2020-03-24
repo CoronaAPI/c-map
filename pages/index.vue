@@ -10,7 +10,7 @@
           <v-select
             v-model="selectedData"
             style="z-index: 99999999;"
-            :items="dataSource"
+            :items="listOfSources"
             label="sources"
           ></v-select>
           <p class="caption">
@@ -59,6 +59,9 @@
                   <p v-if="marker.rating" class="marker-text">
                     <strong>rating:</strong>&nbsp;{{ marker.rating.toFixed(3) }}
                   </p>
+                  <p v-if="marker.url" class="marker-text">
+                    <strong>rating:</strong>&nbsp;{{ marker.url }}
+                  </p>
                 </l-popup>
               </l-circle>
             </l-map>
@@ -89,14 +92,17 @@ export default {
         (l) =>
           l.coordinates &&
           l.coordinates[0] !== undefined &&
-          l.url === this.selectedData &&
+          (l.url === this.selectedData || this.selectedData === 'all') &&
           l.cases > 0
       )
+    },
+    listOfSources() {
+      return ['all', ...this.dataSource]
     },
     selectedData: {
       get() {
         return this.selectedSource === ''
-          ? this.dataSource[0]
+          ? this.listOfSources[1]
           : this.selectedSource
       },
       set(val) {
