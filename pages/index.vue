@@ -60,7 +60,7 @@
                     <strong>rating:</strong>&nbsp;{{ marker.rating.toFixed(3) }}
                   </p>
                   <p v-if="marker.url" class="marker-text">
-                    <strong>rating:</strong>&nbsp;{{ marker.url }}
+                    <strong>source:</strong>&nbsp;{{ marker.url }}
                   </p>
                 </l-popup>
               </l-circle>
