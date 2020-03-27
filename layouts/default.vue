@@ -2,7 +2,7 @@
   <v-app dark>
     <v-navigation-drawer
       v-model="drawer"
-      style="z-index: 999999"
+      style="z-index: 999999999"
       :clipped="clipped"
       fixed
       app
