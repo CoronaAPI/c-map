@@ -29,39 +29,15 @@
                 color="red"
               >
                 <l-popup>
-                  <p v-if="marker.country" class="marker-text">
-                    <strong>country:</strong>&nbsp;{{ marker.country }}
-                  </p>
-                  <p v-if="marker.cases" class="marker-text">
-                    <strong>cases:</strong>&nbsp;{{ marker.cases }}
-                  </p>
-                  <p v-if="marker.active" class="marker-text">
-                    <strong>active:</strong>&nbsp;{{ marker.active }}
-                  </p>
-                  <p v-if="marker.recovered" class="marker-text">
-                    <strong>recovered:</strong>&nbsp;{{ marker.recovered }}
-                  </p>
-                  <p v-if="marker.deaths" class="marker-text">
-                    <strong>deaths:</strong>&nbsp;{{ marker.deaths }}
-                  </p>
-                  <p v-if="marker.tested" class="marker-text">
-                    <strong>tested:</strong>&nbsp;{{ marker.tested }}
-                  </p>
-                  <p v-if="marker.county" class="marker-text">
-                    <strong>county:</strong>&nbsp;{{ marker.county }}
-                  </p>
-                  <p v-if="marker.state" class="marker-text">
-                    <strong>state:</strong>&nbsp;{{ marker.state }}
-                  </p>
-                  <p v-if="marker.population" class="marker-text">
-                    <strong>population:</strong>&nbsp;{{ marker.population }}
-                  </p>
-                  <p v-if="marker.rating" class="marker-text">
-                    <strong>rating:</strong>&nbsp;{{ marker.rating.toFixed(3) }}
-                  </p>
-                  <p v-if="marker.url" class="marker-text">
-                    <strong>source:</strong>&nbsp;{{ marker.url }}
-                  </p>
+                  <div
+                    v-for="prop in Object.entries(marker).sort()"
+                    :key="prop[0]"
+                  >
+                    <p v-if="typeof prop[1] !== 'object'" class="marker-text">
+                      <strong>{{ prop[0] }}</strong
+                      >&nbsp;{{ prop[1] }}
+                    </p>
+                  </div>
                 </l-popup>
               </l-circle>
             </l-map>
@@ -88,7 +64,34 @@ export default {
       dataSource: 'getDataSources'
     }),
     markers() {
-      return this.overview.filter(
+      let reducedOverview = []
+      if (this.selectedData === 'all') {
+        for (let index = 0; index < this.overview.length; index++) {
+          const element = this.overview[index]
+          if (element.state === undefined) {
+            if (
+              !this.overview.find(
+                (l, i) => l.country === element.country && i !== index
+              )
+            ) {
+              reducedOverview.push(element)
+            }
+          } else if (element.county === undefined) {
+            if (
+              !this.overview.find(
+                (l, i) => l.state === element.state && i !== index
+              )
+            ) {
+              reducedOverview.push(element)
+            }
+          } else {
+            reducedOverview.push(element)
+          }
+        }
+      } else {
+        reducedOverview = [...this.overview]
+      }
+      return reducedOverview.filter(
         (l) =>
           l.coordinates &&
           l.coordinates[0] !== undefined &&
@@ -102,7 +105,7 @@ export default {
     selectedData: {
       get() {
         return this.selectedSource === ''
-          ? this.listOfSources[1]
+          ? this.listOfSources[0]
           : this.selectedSource
       },
       set(val) {

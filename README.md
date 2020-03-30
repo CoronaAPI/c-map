@@ -1,4 +1,5 @@
 # c-map
+[![Netlify Status](https://api.netlify.com/api/v1/badges/974b5515-ce17-4457-866d-db22be15adff/deploy-status)](https://app.netlify.com/sites/corona-api-dashboard/deploys)
 
 > Visualisation of the distribution of the coronavirus COVID-19 based on data of the [CoronaAPI](https://corona-api-landingpage.netlify.com/)
 
