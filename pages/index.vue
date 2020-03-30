@@ -60,38 +60,14 @@ export default {
   computed: {
     ...mapGetters({
       overview: 'getCoronaData',
+      reducedOverview: 'reducedCoronaData',
       formatedDate: 'confirmedUpdatedAt',
       dataSource: 'getDataSources'
     }),
     markers() {
-      let reducedOverview = []
-      if (this.selectedData === 'all') {
-        for (let index = 0; index < this.overview.length; index++) {
-          const element = this.overview[index]
-          if (element.state === undefined) {
-            if (
-              !this.overview.find(
-                (l, i) => l.country === element.country && i !== index
-              )
-            ) {
-              reducedOverview.push(element)
-            }
-          } else if (element.county === undefined) {
-            if (
-              !this.overview.find(
-                (l, i) => l.state === element.state && i !== index
-              )
-            ) {
-              reducedOverview.push(element)
-            }
-          } else {
-            reducedOverview.push(element)
-          }
-        }
-      } else {
-        reducedOverview = [...this.overview]
-      }
-      return reducedOverview.filter(
+      const list =
+        this.selectedData === 'all' ? this.reducedOverview : this.overview
+      return list.filter(
         (l) =>
           l.coordinates &&
           l.coordinates[0] !== undefined &&

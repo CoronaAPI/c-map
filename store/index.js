@@ -1,5 +1,6 @@
 export const state = () => ({
   cData: undefined,
+  reducedCData: undefined,
   metaData: undefined,
   dataSources: [],
   isFetchingData: false
@@ -8,6 +9,39 @@ export const state = () => ({
 export const mutations = {
   setCornaData(state, data) {
     state.cData = data
+  },
+  setReducedCornaData(state, data) {
+    state.cData = data
+    const reducedOverview = []
+    for (let index = 0; index < state.cData.length; index++) {
+      const element = state.cData[index]
+      if (element.state === undefined) {
+        if (
+          !state.cData.find(
+            (l, i) => l.country === element.country && i !== index
+          )
+        ) {
+          reducedOverview.push(element)
+        }
+      } else if (element.county === undefined) {
+        if (
+          !state.cData.find((l, i) => l.state === element.state && i !== index)
+        ) {
+          reducedOverview.push(element)
+        }
+      } else if (element.city === undefined) {
+        if (
+          !state.cData.find(
+            (l, i) => l.county === element.county && i !== index
+          )
+        ) {
+          reducedOverview.push(element)
+        }
+      } else {
+        reducedOverview.push(element)
+      }
+    }
+    state.reducedCData = reducedOverview
   },
   setMetaData(state, data) {
     state.metaData = data
@@ -32,6 +66,9 @@ export const getters = {
   },
   confirmedUpdatedAt(state) {
     return state.metaData ? state.metaData.lastUpdate : ''
+  },
+  reducedCoronaData(state) {
+    return state.reducedCData
   }
 }
 
@@ -43,6 +80,7 @@ export const actions = {
     )
     commit('setIsFetchingData', false)
     commit('setCornaData', response.data)
+    commit('setReducedCornaData', response.data)
   },
   async fetchMetaData({ commit }) {
     commit('setIsFetchingData', true)
