@@ -38,22 +38,31 @@ export const getters = {
 export const actions = {
   async fetchCoronaData({ commit, dispatch }) {
     commit('setIsFetchingData', true)
-    const response = await this.$axios.get('https://corona.ndo.dev/api/daily')
+    const response = await this.$axios.get(
+      'https://data.corona-api.org/api/daily'
+    )
     commit('setIsFetchingData', false)
     commit('setCornaData', response.data)
   },
   async fetchMetaData({ commit }) {
     commit('setIsFetchingData', true)
-    const response = await this.$axios.get('https://corona.ndo.dev/meta')
+    const response = await this.$axios.get(
+      'https://data.corona-api.org/api/meta'
+    )
     commit('setIsFetchingData', false)
     commit('setMetaData', response.data)
   },
   async fetchDataSource({ commit }) {
     commit('setIsFetchingData', true)
     const response = await this.$axios.get(
-      'https://corona.ndo.dev/api/datasources'
+      'https://data.corona-api.org/api/datasources'
     )
     commit('setIsFetchingData', false)
     commit('setDataSources', response.data)
+  },
+  async nuxtServerInit({ dispatch }) {
+    await dispatch('fetchCoronaData')
+    await dispatch('fetchMetaData')
+    await dispatch('fetchDataSource')
   }
 }

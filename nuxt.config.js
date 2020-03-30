@@ -30,7 +30,7 @@ export default {
   /*
    ** Plugins to load before mounting the App
    */
-  plugins: ['~/plugins/checkCoronaData.client.js'],
+  plugins: [],
   /*
    ** Nuxt.js dev-modules
    */
@@ -77,9 +77,6 @@ export default {
         }
       }
     }
-  },
-  router: {
-    middleware: 'coronaData'
   },
   /*
    ** Build configuration
