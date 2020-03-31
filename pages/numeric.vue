@@ -50,7 +50,9 @@ export default {
       overview: 'getCoronaData'
     }),
     sortedList() {
-      return [...this.overview].sort((a, b) => b.cases - a.cases)
+      return [...this.overview]
+        .filter((l) => l.cases > 0)
+        .sort((a, b) => b.cases - a.cases)
     }
   }
 }
