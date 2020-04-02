@@ -2,6 +2,7 @@ export const state = () => ({
   cData: undefined,
   reducedCData: undefined,
   metaData: undefined,
+  totalNumbers: undefined,
   dataSources: [],
   isFetchingData: false
 })
@@ -49,6 +50,9 @@ export const mutations = {
   setDataSources(state, data) {
     state.dataSources = data
   },
+  setTotalNumbers(state, data) {
+    state.totalNumbers = data
+  },
   setIsFetchingData(state, isFecthing) {
     state.isFetchingData = isFecthing
   }
@@ -69,6 +73,9 @@ export const getters = {
   },
   reducedCoronaData(state) {
     return state.reducedCData
+  },
+  getTotalNumbers(state) {
+    return state.totalNumbers
   }
 }
 
@@ -98,9 +105,18 @@ export const actions = {
     commit('setIsFetchingData', false)
     commit('setDataSources', response.data)
   },
+  async fetchTotalNumbers({ commit }) {
+    commit('setIsFetchingData', true)
+    const response = await this.$axios.get(
+      'https://data.corona-api.org/api/total'
+    )
+    commit('setIsFetchingData', false)
+    commit('setTotalNumbers', response.data)
+  },
   async nuxtServerInit({ dispatch }) {
     await dispatch('fetchCoronaData')
     await dispatch('fetchMetaData')
     await dispatch('fetchDataSource')
+    await dispatch('fetchTotalNumbers')
   }
 }

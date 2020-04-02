@@ -35,7 +35,7 @@
     <v-content>
       <nuxt />
     </v-content>
-    <v-footer :fixed="fixed" app>
+    <v-footer style="z-index: 999999999" :fixed="fixed" app>
       <span>&copy; {{ new Date().getFullYear() }} &nbsp;-&nbsp; </span>
       <a href="https://corona-api-landingpage.netlify.com/" target="_blank"
         >data source</a

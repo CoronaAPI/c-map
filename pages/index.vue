@@ -6,13 +6,72 @@
           <v-alert dense type="info">
             <strong>Last update:</strong>&nbsp;
             {{ formatedDate }}
+            <p>
+              <strong>Disclaimer:</strong> The following values are based on a
+              constantly changing data collection. The values presented here
+              should not be considered complete or accurate. See
+              <a href="https://www.corona-api.org/" target="_blank">here</a> for
+              further information
+            </p>
           </v-alert>
-          <v-select
-            v-model="selectedData"
-            style="z-index: 99999999;"
-            :items="listOfSources"
-            label="sources"
-          ></v-select>
+          <v-row class="mb-12" justify="center">
+            <v-col cols="12" sm="3">
+              <v-card color="#999660" dark>
+                <v-card-title class="headline">Cases</v-card-title>
+                <v-card-text>
+                  <p class="display-1 text--primary text-center">
+                    {{ totalNumbers.cases }}
+                  </p>
+                </v-card-text>
+              </v-card>
+            </v-col>
+            <v-col cols="12" sm="3">
+              <v-card color="#b59670" dark>
+                <v-card-title class="headline">Active</v-card-title>
+                <v-card-text>
+                  <p class="display-1 text--primary text-center">
+                    {{ totalNumbers.active }}
+                  </p>
+                </v-card-text>
+              </v-card>
+            </v-col>
+            <v-col cols="12" sm="3">
+              <v-card color="#60996b" dark>
+                <v-card-title class="headline">Recovered</v-card-title>
+                <v-card-text>
+                  <p class="display-1 text--primary text-center">
+                    {{ totalNumbers.recovered }}
+                  </p>
+                </v-card-text>
+              </v-card>
+            </v-col>
+            <v-col cols="12" sm="3">
+              <v-card color="#854d56" dark>
+                <v-card-title class="headline">Deaths</v-card-title>
+                <v-card-text>
+                  <p class="display-1 text--primary text-center">
+                    {{ totalNumbers.deaths }}
+                  </p>
+                </v-card-text>
+              </v-card>
+            </v-col>
+          </v-row>
+          <v-row justify="center">
+            <v-col cols="12" sm="6">
+              <v-switch
+                v-model="showRelativeRatio"
+                label="Show the number of cases in relation to the population of a country (cases / population)"
+              ></v-switch>
+            </v-col>
+            <v-col cols="12" sm="6">
+              <v-select
+                v-model="selectedData"
+                style="z-index: 99999999;"
+                :items="listOfSources"
+                label="sources"
+              ></v-select>
+            </v-col>
+          </v-row>
           <p class="caption">
             Click on the points on the map to get more information
           </p>
@@ -25,7 +84,7 @@
                 v-for="(marker, index) in markers"
                 :key="index"
                 :lat-lng="[marker.coordinates[1], marker.coordinates[0]]"
-                :radius="marker.cases * 10"
+                :radius="getRadius(marker)"
                 color="red"
               >
                 <l-popup>
@@ -54,7 +113,8 @@ import { mapGetters } from 'vuex'
 export default {
   data() {
     return {
-      selectedSource: ''
+      selectedSource: '',
+      showRelativeRatio: false
     }
   },
   computed: {
@@ -62,11 +122,17 @@ export default {
       overview: 'getCoronaData',
       reducedOverview: 'reducedCoronaData',
       formatedDate: 'confirmedUpdatedAt',
-      dataSource: 'getDataSources'
+      dataSource: 'getDataSources',
+      totalNumbers: 'getTotalNumbers'
     }),
     markers() {
-      const list =
+      let list =
         this.selectedData === 'all' ? this.reducedOverview : this.overview
+      if (this.showRelativeRatio) {
+        list = list.filter((l) => {
+          return l.population !== undefined
+        })
+      }
       return list.filter(
         (l) =>
           l.coordinates &&
@@ -91,7 +157,10 @@ export default {
   },
   methods: {
     getRadius(marker) {
-      return marker.cases * 15
+      if (this.showRelativeRatio) {
+        return (marker.cases / marker.population) * 30000000
+      }
+      return marker.cases * 10
     }
   }
 }
