@@ -1,3 +1,5 @@
+import { reduceData } from '~/services/coronaDataParser'
+
 export const state = () => ({
   cData: undefined,
   reducedCData: undefined,
@@ -12,37 +14,7 @@ export const mutations = {
     state.cData = data
   },
   setReducedCornaData(state, data) {
-    state.cData = data
-    const reducedOverview = []
-    for (let index = 0; index < state.cData.length; index++) {
-      const element = state.cData[index]
-      if (element.state === undefined) {
-        if (
-          !state.cData.find(
-            (l, i) => l.country === element.country && i !== index
-          )
-        ) {
-          reducedOverview.push(element)
-        }
-      } else if (element.county === undefined) {
-        if (
-          !state.cData.find((l, i) => l.state === element.state && i !== index)
-        ) {
-          reducedOverview.push(element)
-        }
-      } else if (element.city === undefined) {
-        if (
-          !state.cData.find(
-            (l, i) => l.county === element.county && i !== index
-          )
-        ) {
-          reducedOverview.push(element)
-        }
-      } else {
-        reducedOverview.push(element)
-      }
-    }
-    state.reducedCData = reducedOverview
+    state.reducedCData = data
   },
   setMetaData(state, data) {
     state.metaData = data
@@ -80,38 +52,38 @@ export const getters = {
 }
 
 export const actions = {
-  async fetchCoronaData({ commit, dispatch }) {
+  async fetchCoronaData({ commit }) {
     commit('setIsFetchingData', true)
     const response = await this.$axios.get(
       'https://data.corona-api.org/api/daily'
     )
-    commit('setIsFetchingData', false)
     commit('setCornaData', response.data)
-    commit('setReducedCornaData', response.data)
+    commit('setReducedCornaData', reduceData(response.data))
+    commit('setIsFetchingData', false)
   },
   async fetchMetaData({ commit }) {
     commit('setIsFetchingData', true)
     const response = await this.$axios.get(
       'https://data.corona-api.org/api/meta'
     )
-    commit('setIsFetchingData', false)
     commit('setMetaData', response.data)
+    commit('setIsFetchingData', false)
   },
   async fetchDataSource({ commit }) {
     commit('setIsFetchingData', true)
     const response = await this.$axios.get(
       'https://data.corona-api.org/api/datasources'
     )
-    commit('setIsFetchingData', false)
     commit('setDataSources', response.data)
+    commit('setIsFetchingData', false)
   },
   async fetchTotalNumbers({ commit }) {
     commit('setIsFetchingData', true)
     const response = await this.$axios.get(
       'https://data.corona-api.org/api/total'
     )
-    commit('setIsFetchingData', false)
     commit('setTotalNumbers', response.data)
+    commit('setIsFetchingData', false)
   },
   async nuxtServerInit({ dispatch }) {
     await dispatch('fetchCoronaData')

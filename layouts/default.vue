@@ -40,6 +40,12 @@
       <a href="https://corona-api-landingpage.netlify.com/" target="_blank"
         >data source</a
       >
+      <client-only>
+        <div v-if="isFetchingData" class="ml-4">
+          <v-progress-circular :size="20" indeterminate color="amber" />
+          <span>fetching data</span>
+        </div>
+      </client-only>
       <v-spacer />
       <a
         href="https://corona-api-landingpage.netlify.com/impressum/"
@@ -51,6 +57,8 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+
 export default {
   data() {
     return {
@@ -71,6 +79,11 @@ export default {
       ],
       title: 'corona tracker'
     }
+  },
+  computed: {
+    ...mapGetters({
+      isFetchingData: 'isFetchingData'
+    })
   }
 }
 </script>

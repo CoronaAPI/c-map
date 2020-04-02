@@ -1,8 +1,8 @@
 <template>
   <v-container>
-    <v-layout>
-      <v-flex>
-        <client-only>
+    <client-only>
+      <v-layout>
+        <v-flex>
           <v-alert dense type="info">
             <strong>Last update:</strong>&nbsp;
             {{ formatedDate }}
@@ -91,7 +91,7 @@
                   :key="index"
                   :lat-lng="[marker.coordinates[1], marker.coordinates[0]]"
                   :radius="getRadius(marker)"
-                  color="red"
+                  color="#999660"
                 >
                   <l-popup>
                     <div
@@ -108,9 +108,9 @@
               </l-map>
             </div>
           </v-lazy>
-        </client-only>
-      </v-flex>
-    </v-layout>
+        </v-flex>
+      </v-layout>
+    </client-only>
   </v-container>
 </template>
 
