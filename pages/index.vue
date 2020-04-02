@@ -75,32 +75,39 @@
           <p class="caption">
             Click on the points on the map to get more information
           </p>
-          <div id="map-wrap" style="height: 60vh; width: 100%;">
-            <l-map :zoom="2" :min-zoom="2" :max-zoom="13" :center="[50.0, 8.4]">
-              <l-tile-layer
-                url="https://{s}.basemaps.cartocdn.com/rastertiles/dark_all/{z}/{x}/{y}.png"
-              ></l-tile-layer>
-              <l-circle
-                v-for="(marker, index) in markers"
-                :key="index"
-                :lat-lng="[marker.coordinates[1], marker.coordinates[0]]"
-                :radius="getRadius(marker)"
-                color="red"
+          <v-lazy>
+            <div id="map-wrap" style="height: 60vh; width: 100%;">
+              <l-map
+                :zoom="2"
+                :min-zoom="2"
+                :max-zoom="13"
+                :center="[50.0, 8.4]"
               >
-                <l-popup>
-                  <div
-                    v-for="prop in Object.entries(marker).sort()"
-                    :key="prop[0]"
-                  >
-                    <p v-if="typeof prop[1] !== 'object'" class="marker-text">
-                      <strong>{{ prop[0] }}</strong
-                      >&nbsp;{{ prop[1] }}
-                    </p>
-                  </div>
-                </l-popup>
-              </l-circle>
-            </l-map>
-          </div>
+                <l-tile-layer
+                  url="https://{s}.basemaps.cartocdn.com/rastertiles/dark_all/{z}/{x}/{y}.png"
+                ></l-tile-layer>
+                <l-circle
+                  v-for="(marker, index) in markers"
+                  :key="index"
+                  :lat-lng="[marker.coordinates[1], marker.coordinates[0]]"
+                  :radius="getRadius(marker)"
+                  color="red"
+                >
+                  <l-popup>
+                    <div
+                      v-for="prop in Object.entries(marker).sort()"
+                      :key="prop[0]"
+                    >
+                      <p v-if="typeof prop[1] !== 'object'" class="marker-text">
+                        <strong>{{ prop[0] }}</strong
+                        >&nbsp;{{ prop[1] }}
+                      </p>
+                    </div>
+                  </l-popup>
+                </l-circle>
+              </l-map>
+            </div>
+          </v-lazy>
         </client-only>
       </v-flex>
     </v-layout>

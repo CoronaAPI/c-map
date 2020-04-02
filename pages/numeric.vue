@@ -54,6 +54,7 @@ export default {
         .filter((l) => l.cases > 0)
         .map((l) => ({
           ...l,
+          rating: l.rating.toFixed(2),
           ratioCasesPop: l.population
             ? ((l.cases * 100) / l.population).toFixed(2)
             : '-'
