@@ -107,7 +107,7 @@
                   <l-tile-layer
                     url="https://{s}.basemaps.cartocdn.com/rastertiles/dark_all/{z}/{x}/{y}.png"
                   ></l-tile-layer>
-                  <l-circle
+                  <l-circle-marker
                     v-for="(marker, index) in markers"
                     :key="index"
                     :lat-lng="[marker.coordinates[1], marker.coordinates[0]]"
@@ -128,7 +128,7 @@
                         </p>
                       </div>
                     </l-popup>
-                  </l-circle>
+                  </l-circle-marker>
                 </l-map>
               </div>
             </v-lazy>
@@ -191,9 +191,12 @@ export default {
   methods: {
     getRadius(marker) {
       if (this.showRelativeRatio) {
-        return (marker.cases / marker.population) * 30000000
+        return (
+          (marker.cases / this.totalNumbers.cases / marker.population) *
+          2000000000
+        )
       }
-      return marker.cases * 10
+      return (marker.cases / this.totalNumbers.cases) * 400
     }
   }
 }
