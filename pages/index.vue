@@ -56,58 +56,63 @@
               </v-card>
             </v-col>
           </v-row>
-          <v-row justify="center">
-            <v-col cols="12" sm="6">
-              <v-switch
-                v-model="showRelativeRatio"
-                label="Show the number of cases in relation to the population of a country (cases / population)"
-              ></v-switch>
-            </v-col>
-            <v-col cols="12" sm="6">
-              <v-select
-                v-model="selectedData"
-                style="z-index: 99999999;"
-                :items="listOfSources"
-                label="sources"
-              ></v-select>
-            </v-col>
-          </v-row>
-          <p class="caption">
-            Click on the points on the map to get more information
-          </p>
-          <v-lazy>
-            <div id="map-wrap" style="height: 60vh; width: 100%;">
-              <l-map
-                :zoom="2"
-                :min-zoom="2"
-                :max-zoom="13"
-                :center="[50.0, 8.4]"
-              >
-                <l-tile-layer
-                  url="https://{s}.basemaps.cartocdn.com/rastertiles/dark_all/{z}/{x}/{y}.png"
-                ></l-tile-layer>
-                <l-circle
-                  v-for="(marker, index) in markers"
-                  :key="index"
-                  :lat-lng="[marker.coordinates[1], marker.coordinates[0]]"
-                  :radius="getRadius(marker)"
-                  color="#999660"
+          <div v-if="$vuetify.breakpoint.mdAndUp">
+            <v-row justify="center">
+              <v-col cols="12" sm="6">
+                <v-switch
+                  v-model="showRelativeRatio"
+                  label="Show the number of cases in relation to the population of a country (cases / population)"
+                ></v-switch>
+              </v-col>
+              <v-col cols="12" sm="6">
+                <v-select
+                  v-model="selectedData"
+                  style="z-index: 99999999;"
+                  :items="listOfSources"
+                  label="sources"
+                ></v-select>
+              </v-col>
+            </v-row>
+            <p class="caption">
+              Click on the points on the map to get more information
+            </p>
+            <v-lazy>
+              <div id="map-wrap" style="height: 60vh; width: 100%;">
+                <l-map
+                  :zoom="2"
+                  :min-zoom="2"
+                  :max-zoom="13"
+                  :center="[50.0, 8.4]"
                 >
-                  <l-popup>
-                    <div
-                      v-for="prop in Object.entries(marker).sort()"
-                      :key="prop[0]"
-                    >
-                      <p v-if="typeof prop[1] !== 'object'" class="marker-text">
-                        <strong>{{ prop[0] }}</strong
-                        >&nbsp;{{ prop[1] }}
-                      </p>
-                    </div>
-                  </l-popup>
-                </l-circle>
-              </l-map>
-            </div>
-          </v-lazy>
+                  <l-tile-layer
+                    url="https://{s}.basemaps.cartocdn.com/rastertiles/dark_all/{z}/{x}/{y}.png"
+                  ></l-tile-layer>
+                  <l-circle
+                    v-for="(marker, index) in markers"
+                    :key="index"
+                    :lat-lng="[marker.coordinates[1], marker.coordinates[0]]"
+                    :radius="getRadius(marker)"
+                    color="#999660"
+                  >
+                    <l-popup>
+                      <div
+                        v-for="prop in Object.entries(marker).sort()"
+                        :key="prop[0]"
+                      >
+                        <p
+                          v-if="typeof prop[1] !== 'object'"
+                          class="marker-text"
+                        >
+                          <strong>{{ prop[0] }}</strong
+                          >&nbsp;{{ prop[1] }}
+                        </p>
+                      </div>
+                    </l-popup>
+                  </l-circle>
+                </l-map>
+              </div>
+            </v-lazy>
+          </div>
         </v-flex>
       </v-layout>
     </client-only>

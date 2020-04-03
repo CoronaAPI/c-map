@@ -28,20 +28,7 @@ import { mapGetters } from 'vuex'
 export default {
   data() {
     return {
-      search: '',
-      headers: [
-        { text: 'country', value: 'country' },
-        { text: 'cases', value: 'cases' },
-        { text: 'active', value: 'active' },
-        { text: 'recovered', value: 'recovered' },
-        { text: 'deaths', value: 'deaths' },
-        { text: 'county', value: 'county' },
-        { text: 'state', value: 'state' },
-        { text: 'population', value: 'population' },
-        { text: 'cases / population %', value: 'ratioCasesPop' },
-        { text: 'rating', value: 'rating' },
-        { text: 'url', value: 'url' }
-      ]
+      search: ''
     }
   },
   computed: {
@@ -49,6 +36,29 @@ export default {
       formatedDate: 'confirmedUpdatedAt',
       overview: 'getCoronaData'
     }),
+    headers() {
+      if (this.$vuetify.breakpoint.mdAndUp) {
+        return [
+          { text: 'country', value: 'country' },
+          { text: 'cases', value: 'cases' },
+          { text: 'active', value: 'active' },
+          { text: 'recovered', value: 'recovered' },
+          { text: 'deaths', value: 'deaths' },
+          { text: 'county', value: 'county' },
+          { text: 'state', value: 'state' },
+          { text: 'population', value: 'population' },
+          { text: 'cases / population %', value: 'ratioCasesPop' },
+          { text: 'rating', value: 'rating' },
+          { text: 'url', value: 'url' }
+        ]
+      }
+      return [
+        { text: 'country', value: 'country' },
+        { text: 'cases', value: 'cases' },
+        { text: 'deaths', value: 'deaths' },
+        { text: 'cases / population %', value: 'ratioCasesPop' }
+      ]
+    },
     sortedList() {
       return [...this.overview]
         .filter((l) => l.cases > 0)
