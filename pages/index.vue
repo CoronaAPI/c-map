@@ -19,7 +19,12 @@
               <v-card color="#999660" dark>
                 <v-card-title class="headline">Cases</v-card-title>
                 <v-card-text>
-                  <p class="display-1 text--primary text-center">
+                  <v-progress-circular
+                    v-if="isFetchingData"
+                    indeterminate
+                    color="white"
+                  />
+                  <p v-else class="display-1 text--primary text-center">
                     {{ totalNumbers.cases }}
                   </p>
                 </v-card-text>
@@ -29,7 +34,12 @@
               <v-card color="#b59670" dark>
                 <v-card-title class="headline">Active</v-card-title>
                 <v-card-text>
-                  <p class="display-1 text--primary text-center">
+                  <v-progress-circular
+                    v-if="isFetchingData"
+                    indeterminate
+                    color="white"
+                  />
+                  <p v-else class="display-1 text--primary text-center">
                     {{ totalNumbers.active }}
                   </p>
                 </v-card-text>
@@ -39,7 +49,12 @@
               <v-card color="#60996b" dark>
                 <v-card-title class="headline">Recovered</v-card-title>
                 <v-card-text>
-                  <p class="display-1 text--primary text-center">
+                  <v-progress-circular
+                    v-if="isFetchingData"
+                    indeterminate
+                    color="white"
+                  />
+                  <p v-else class="display-1 text--primary text-center">
                     {{ totalNumbers.recovered }}
                   </p>
                 </v-card-text>
@@ -49,14 +64,19 @@
               <v-card color="#854d56" dark>
                 <v-card-title class="headline">Deaths</v-card-title>
                 <v-card-text>
-                  <p class="display-1 text--primary text-center">
+                  <v-progress-circular
+                    v-if="isFetchingData"
+                    indeterminate
+                    color="white"
+                  />
+                  <p v-else class="display-1 text--primary text-center">
                     {{ totalNumbers.deaths }}
                   </p>
                 </v-card-text>
               </v-card>
             </v-col>
           </v-row>
-          <div v-if="$vuetify.breakpoint.mdAndUp">
+          <div v-if="$vuetify.breakpoint.mdAndUp && !isFetchingData">
             <v-row justify="center">
               <v-col cols="12" sm="6">
                 <v-switch
@@ -135,7 +155,8 @@ export default {
       reducedOverview: 'reducedCoronaData',
       formatedDate: 'confirmedUpdatedAt',
       dataSource: 'getDataSources',
-      totalNumbers: 'getTotalNumbers'
+      totalNumbers: 'getTotalNumbers',
+      isFetchingData: 'isFetchingData'
     }),
     markers() {
       let list =

@@ -5,19 +5,22 @@
         <strong>Last update:</strong>&nbsp;
         {{ formatedDate }}
       </v-alert>
-      <v-text-field
-        v-model="search"
-        append-icon="mdi-magnify"
-        label="Search"
-        single-line
-        hide-details
-      ></v-text-field>
-      <v-data-table
-        :headers="headers"
-        :items="sortedList"
-        :search="search"
-        class="elevation-1"
-      />
+      <v-progress-circular v-if="isFetchingData" indeterminate color="white" />
+      <div v-else>
+        <v-text-field
+          v-model="search"
+          append-icon="mdi-magnify"
+          label="Search"
+          single-line
+          hide-details
+        ></v-text-field>
+        <v-data-table
+          :headers="headers"
+          :items="sortedList"
+          :search="search"
+          class="elevation-1"
+        />
+      </div>
     </v-layout>
   </v-container>
 </template>
@@ -34,7 +37,8 @@ export default {
   computed: {
     ...mapGetters({
       formatedDate: 'confirmedUpdatedAt',
-      overview: 'getCoronaData'
+      overview: 'getCoronaData',
+      isFetchingData: 'isFetchingData'
     }),
     headers() {
       if (this.$vuetify.breakpoint.mdAndUp) {
@@ -56,7 +60,9 @@ export default {
         { text: 'country', value: 'country' },
         { text: 'cases', value: 'cases' },
         { text: 'deaths', value: 'deaths' },
-        { text: 'cases / population %', value: 'ratioCasesPop' }
+        { text: 'cases / population %', value: 'ratioCasesPop' },
+        { text: 'state', value: 'state' },
+        { text: 'county', value: 'county' }
       ]
     },
     sortedList() {
