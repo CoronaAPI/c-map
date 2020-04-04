@@ -41,7 +41,11 @@ export const getters = {
     return state.dataSources
   },
   confirmedUpdatedAt(state) {
-    return state.metaData ? state.metaData.lastUpdate : ''
+    if (state.metaData) {
+      const lastUpdate = new Date(state.metaData.lastUpdate)
+      return lastUpdate.toString()
+    }
+    return ''
   },
   reducedCoronaData(state) {
     return state.reducedCData
