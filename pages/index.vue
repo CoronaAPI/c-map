@@ -192,11 +192,10 @@ export default {
     getRadius(marker) {
       if (this.showRelativeRatio) {
         return (
-          (marker.cases / this.totalNumbers.cases / marker.population) *
-          2000000000
+          (marker.cases / this.totalNumbers.cases / marker.population) * 2000000
         )
       }
-      return (marker.cases / this.totalNumbers.cases) * 400
+      return marker.cases / this.totalNumbers.cases
     }
   }
 }
